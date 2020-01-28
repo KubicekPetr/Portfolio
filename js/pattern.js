@@ -1,12 +1,14 @@
-const grey = '#FDF6EE';
-const darkBlue = '#023586';
-const pink = '#FCD4D4';
-const darkPink = '#FCD4D4';
-const lightPink = '#FEE5E1';
-const salmon = '#FEC1A2';
-const blue = '#0179F0';
-const lightBlue = '#4098F1';
-const orange = '#FFB572';
+const grey0 = '#FDF6EE';
+const darkBlue1 = '#023586';
+const pink2 = '#FBD4D7';
+const pink3 = '#FCD4D4';
+const salmon4 = '#FEC1A2';
+const pink5 = '#FCE3DF'; // FCE3DF / F9DCDC
+const pink6 = '#FCD4D4';
+const blue7 = '#4098F1'; // 4098F1 / 0179F1
+const blue8 = '#0179F1';
+const blue10 = '#0179F1'; 
+const orange11 = '#FFB572'; 
 
 
 const clear = () => {
@@ -32,13 +34,13 @@ const responsivness = (width, height) => {
     return cube;
 }
 
-const fillFromTriangles = (div, cube, top, right, bottom, left) => {
-    div.style.width = 0 + 'px';
-    div.style.height = 0 + 'px';
-    div.style.borderTop = `${cube / 2}px solid ${top}`;
-    div.style.borderLeft = `${cube / 2}px solid ${left}`;
-    div.style.borderRight = `${cube / 2}px solid ${right}`;
-    div.style.borderBottom = `${cube / 2}px solid ${bottom}`;
+const fillFromTriangles = (cube, cubeSize, top, right, bottom, left) => {
+    cube.style.width = 0 + 'px';
+    cube.style.height = 0 + 'px';
+    cube.style.borderTop = `${cubeSize / 2}px solid ${top}`;
+    cube.style.borderLeft = `${cubeSize / 2}px solid ${left}`;
+    cube.style.borderRight = `${cubeSize / 2}px solid ${right}`;
+    cube.style.borderBottom = `${cubeSize / 2}px solid ${bottom}`;
 }
 
 const getCircle = (background, offset) => {
@@ -78,6 +80,13 @@ const render = () => {
     const height = window.innerHeight;
     const cubeSize = responsivness(width, height);
 
+    const map = [[1, 1, 1, 0, 2, 0, 0, 0, 0, 0, 0],
+                 [0, 3, 4, 5, 6, 6, 6, 6, 6, 6, 0],
+                 [3, 4, 7, 6, 6, 6, 6, 6, 6, 4, 8],
+                 [4, 8, 6, 6, 6, 6, 6, 6, 6, 8, 3],
+                 [3, 9, 4, 6, 6, 6, 6, 6, 8, 3, 4],
+                 [10, 0, 6, 10, 11, 6, 4, 8, 6, 11, 10]];
+
     let x = 0;
     let y = 0;
     for (let i = 0; i < 6; i++) {
@@ -85,9 +94,44 @@ const render = () => {
             const cube = createCube(cubeSize, x, y);
 
             // section for modifying cube
-            if (j <= 2 && i === 0) {
-                cube.style.background = darkBlue;
-            } 
+            switch (map[i][j]) {
+                case 0:
+                    cube.style.background = grey0;
+                    break;
+                case 1:
+                    cube.style.background = darkBlue1;
+                    break;
+                case 2:
+                    fillFromTriangles(cube, cubeSize, pink2, grey0, grey0, pink2);
+                    break;
+                case 3:
+                    cube.style.background = pink3;
+                    break;
+                case 4:
+                    cube.style.background = salmon4;
+                    break;
+                case 5:
+                    fillFromTriangles(cube, cubeSize, pink5, pink6, pink6, pink5);
+                    break;
+                case 6:
+                    cube.style.background = pink6;
+                    break;
+                case 7:
+                    fillFromTriangles(cube, cubeSize, blue7, blue8, blue8, blue7);
+                    break;
+                case 8:
+                    fillFromTriangles(cube, cubeSize, pink2, salmon4, salmon4, pink2);
+                    break;
+                case 9:
+                    fillFromTriangles(cube, cubeSize, pink2, pink2, salmon4, salmon4);
+                    break;
+                case 10:
+                    cube.style.background = blue7;
+                    break;
+                case 11:
+                    cube.style.background = orange11;
+                    break;
+            }
 
             // section for object inside cube
 
