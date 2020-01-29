@@ -73,6 +73,35 @@ const createCube = (size, x, y) => {
     return cube;
 }
 
+const createMap = () => {
+    const map = [[1, 1, 1, 0, 2, 0, 0, 0, 0, 0, 0],
+    [0, 3, 4, 5, 6, 6, 6, 6, 6, 6, 0],
+    [3, 4, 7, 6, 6, 6, 6, 6, 6, 4, 8],
+    [4, 8, 6, 6, 6, 6, 6, 6, 6, 8, 3],
+    [3, 9, 4, 6, 6, 6, 6, 6, 8, 3, 4],
+    [10, 0, 6, 10, 11, 6, 4, 8, 6, 11, 10]];
+    return map;
+}
+
+const leftAutoFill = (x, cubeSize) => {
+    let currentX = x - cubeSize;
+    let currentY = 0;
+    let colorDeviation = 0;
+    while (currentX + cubeSize > 0) {
+        for (let i = 0; i < 6; i++) {
+            const cube = createCube(cubeSize + 1, currentX, currentY); // +1 for render bugs7
+            if (i === 0) cube.style.background = darkBlue1;
+            else if ((i + colorDeviation) % 2 === 0) cube.style.background = salmon4;
+            else cube.style.background = pink3;
+            document.getElementById('pattern').appendChild(cube);
+            currentY += cubeSize;
+        }
+        colorDeviation++;
+        currentX -= cubeSize;
+        currentY = 0;
+    }
+}
+
 const render = () => {
     clear();
 
@@ -80,18 +109,19 @@ const render = () => {
     const height = window.innerHeight;
     const cubeSize = responsivness(width, height);
 
-    const map = [[1, 1, 1, 0, 2, 0, 0, 0, 0, 0, 0],
-                 [0, 3, 4, 5, 6, 6, 6, 6, 6, 6, 0],
-                 [3, 4, 7, 6, 6, 6, 6, 6, 6, 4, 8],
-                 [4, 8, 6, 6, 6, 6, 6, 6, 6, 8, 3],
-                 [3, 9, 4, 6, 6, 6, 6, 6, 8, 3, 4],
-                 [10, 0, 6, 10, 11, 6, 4, 8, 6, 11, 10]];
-
-    let x = 0;
+    // step 1 define X,Y
+    let x = cubeSize * 11 < width ? (width - cubeSize * 11) / 2 : 0;
     let y = 0;
+    // step 2 fillLeftOverflow
+    leftAutoFill(x, cubeSize);
+    // step 3 createMap
+    const map = createMap();
+    // step 5 rendrer map
+
+
     for (let i = 0; i < 6; i++) {
         for (let j = 0; j < 11; j++) {
-            const cube = createCube(cubeSize, x, y);
+            const cube = createCube(cubeSize + 1, x, y); // +1 for render bugs
 
             // section for modifying cube
             switch (map[i][j]) {
@@ -139,7 +169,7 @@ const render = () => {
             document.getElementById('pattern').appendChild(cube);
             x += cubeSize;
         }
-        x = 0;
+        x = cubeSize * 11 < width ? (width - cubeSize * 11) / 2 : 0;
         y += cubeSize;
     }
 }
