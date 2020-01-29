@@ -1,14 +1,14 @@
-const grey0 = '#FDF6EE';
-const darkBlue1 = '#023586';
-const pink2 = '#FBD4D7';
-const pink3 = '#FCD4D4';
-const salmon4 = '#FEC1A2';
-const pink5 = '#FCE3DF'; // FCE3DF / F9DCDC
-const pink6 = '#FCD4D4';
-const blue7 = '#4098F1'; // 4098F1 / 0179F1
-const blue8 = '#0179F1';
+const grey0 = '#FCF6EE';
+const violet1 = '#78295A';
+const blue2 = '#9A8BEC';
+const blue3 = '#DDDDE3';
+const salmon4 = '#F4E6E8';
+const blue5 = '#7A68EB';
+const blue6 = '#4D3FF0';
+const blue7 = '#16103F'; // 4098F1 / 0179F1
+const blue8 = '#F1E8E8';
 const blue10 = '#0179F1'; 
-const orange11 = '#FFB572'; 
+const blue11 = '#9B86E8'; 
 
 
 const clear = () => {
@@ -89,10 +89,10 @@ const leftAutoFill = (x, cubeSize) => {
     let colorDeviation = 0;
     while (currentX + cubeSize > 0) {
         for (let i = 0; i < 6; i++) {
-            const cube = createCube(cubeSize + 1, currentX, currentY); // +1 for render bugs7
-            if (i === 0) cube.style.background = darkBlue1;
+            const cube = createCube(cubeSize, currentX, currentY);
+            if (i === 0) cube.style.background = violet1;
             else if ((i + colorDeviation) % 2 === 0) cube.style.background = salmon4;
-            else cube.style.background = pink3;
+            else cube.style.background = blue3;
             document.getElementById('pattern').appendChild(cube);
             currentY += cubeSize;
         }
@@ -102,12 +102,32 @@ const leftAutoFill = (x, cubeSize) => {
     }
 }
 
+const rightAutoFill = (x, cubeSize, width) => {
+    let currentX = x + cubeSize * 11;
+    let currentY = 0;
+    let colorDeviation = 0;
+    while (currentX < width) {
+        for (let i = 0; i < 6; i++) {
+            const cube = createCube(cubeSize, currentX, currentY); 
+            if (i === 1 && colorDeviation === 0) // colorDeviation is here used for first column using instead of new variable
+                fillFromTriangles(cube, cubeSize, blue2, salmon4, salmon4, blue2);
+            else if ((i + colorDeviation) % 2 === 1) cube.style.background = salmon4;
+            else cube.style.background = blue3;
+            document.getElementById('pattern').appendChild(cube);
+            currentY += cubeSize;
+        }
+        colorDeviation++;
+        currentX += cubeSize;
+        currentY = 0;
+    }
+}
+
 const render = () => {
     clear();
 
     const width = window.innerWidth;
     const height = window.innerHeight;
-    const cubeSize = responsivness(width, height);
+    const cubeSize = responsivness(width, height) + 2; // +2 for render bugs
 
     // step 1 define X,Y
     let x = cubeSize * 11 < width ? (width - cubeSize * 11) / 2 : 0;
@@ -116,12 +136,13 @@ const render = () => {
     leftAutoFill(x, cubeSize);
     // step 3 createMap
     const map = createMap();
+    // step 4 fillRightOverflow
+    rightAutoFill(x, cubeSize, width);
     // step 5 rendrer map
-
 
     for (let i = 0; i < 6; i++) {
         for (let j = 0; j < 11; j++) {
-            const cube = createCube(cubeSize + 1, x, y); // +1 for render bugs
+            const cube = createCube(cubeSize, x, y);
 
             // section for modifying cube
             switch (map[i][j]) {
@@ -129,37 +150,37 @@ const render = () => {
                     cube.style.background = grey0;
                     break;
                 case 1:
-                    cube.style.background = darkBlue1;
+                    cube.style.background = violet1;
                     break;
                 case 2:
-                    fillFromTriangles(cube, cubeSize, pink2, grey0, grey0, pink2);
+                    fillFromTriangles(cube, cubeSize, blue2, grey0, grey0, blue2);
                     break;
                 case 3:
-                    cube.style.background = pink3;
+                    cube.style.background = blue3;
                     break;
                 case 4:
                     cube.style.background = salmon4;
                     break;
                 case 5:
-                    fillFromTriangles(cube, cubeSize, pink5, pink6, pink6, pink5);
+                    fillFromTriangles(cube, cubeSize, blue5, blue6, blue6, blue5);
                     break;
                 case 6:
-                    cube.style.background = pink6;
+                    cube.style.background = blue6;
                     break;
                 case 7:
                     fillFromTriangles(cube, cubeSize, blue7, blue8, blue8, blue7);
                     break;
                 case 8:
-                    fillFromTriangles(cube, cubeSize, pink2, salmon4, salmon4, pink2);
+                    fillFromTriangles(cube, cubeSize, blue2, salmon4, salmon4, blue2);
                     break;
                 case 9:
-                    fillFromTriangles(cube, cubeSize, pink2, pink2, salmon4, salmon4);
+                    fillFromTriangles(cube, cubeSize, blue2, blue2, salmon4, salmon4);
                     break;
                 case 10:
                     cube.style.background = blue7;
                     break;
                 case 11:
-                    cube.style.background = orange11;
+                    cube.style.background = blue11;
                     break;
             }
 
