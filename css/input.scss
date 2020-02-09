@@ -1,3 +1,112 @@
+$blue5: rgb(11, 7, 36);
+$blue7: #16103F;
+$purple: #5540C6;
+$purple2: rgb(80, 0, 145);
+$caption: #4D3FF0;
+
 body {
     overflow: hidden;
+    font-family: 'Rubik', sans-serif;
+    margin: 0;
+    background: #FCF6EE;
+}
+
+h1 {
+    margin: 0;
+}
+
+a {
+    text-decoration: none;
+}
+
+.cube {
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.contactButton {
+    color: #FBFBFB;
+    text-align: center;
+    padding: 8%;
+    width: 100%;
+    background-color: $purple;
+
+    &:hover {
+        transition: 0.2s;
+        background-color: $purple2;
+    }
+}
+
+.aboutButton, .homeButton {
+    color: #16103F;
+    font-weight: 500;
+    font-family: 'Roboto', sans-serif;
+    margin-top: 2%;
+
+    &:hover {
+        color: #575370;
+        text-decoration: underline;
+        transition: 0.2s;
+    }
+}
+
+.caption {
+    z-index: 10;
+    padding-top: 2em;
+    background: $caption;
+
+    h1 {
+        color: #FBFBFB;
+        letter-spacing: 0.1rem;
+    }
+
+    .browseButton {
+        display: block;
+        text-align: center;
+        padding: 4.5%;
+        color: #FBFBFB;
+        background-color: $blue7;
+    
+        &:hover {
+            transition: 0.2s;
+            background-color: $blue5;
+        }
+    }
+}
+
+header {
+    width: 90%;
+    min-height: 3rem;
+    height: 10vh;
+    margin: 0 auto;
+    background: #FCF6EE;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .contactButton {
+        padding: 0.5rem 1rem;
+        width: initial;
+    }
+
+    .aboutButton, .homeButton {
+        display: inline-block;
+        margin-right: 1.5rem;
+    }
+}
+
+main {
+    height: 90vh;
+    min-height: 25rem;
+    background: $caption;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .browseButton {
+        margin: 2rem 0;
+    }
 }
